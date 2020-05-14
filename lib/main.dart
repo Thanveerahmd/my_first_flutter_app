@@ -34,12 +34,11 @@ class _MyFirstAppState extends State<MyFirstApp> {
 
   @override
   Widget build(BuildContext context) {
-
     // var questions = [
     //   'what is your favourite colour ?',
     //   'what is your favourite animal ?'
     // ];
-    
+
     var questions = [
       {
         'questionText': 'what is your favourite colour ?',
@@ -62,12 +61,26 @@ class _MyFirstAppState extends State<MyFirstApp> {
         ),
         body: Column(
           children: [
+
             Quection(questions[_quectionIndex]['questionText']),
-            Answer(_answerQuestions),
+
+            // In this senario spread oprator (...) or 3 dots task is to pull all the values 
+            // in the list and  use it as indivual value for the sourronding list (children[])
+        
+            ...(questions[_quectionIndex]['answers'] as List<String>)
+                .map((answer) => Answer(_answerQuestions, answer))
+                .toList()
+
+            // Diffrent methods of creating buttons
+
+            /*
+            // method 1
             RaisedButton(child: Text('Answer 1'), onPressed: _answerQuestions),
+            // method 2
             RaisedButton(
                 child: Text('Answer 2'),
                 onPressed: () => print('answer 2 selected')),
+            // method 3
             RaisedButton(
                 child: Text('Answer 3'),
                 onPressed: () {
@@ -75,15 +88,7 @@ class _MyFirstAppState extends State<MyFirstApp> {
                   setState(() {
                     _quectionIndex++;
                   });
-                }),
-            RaisedButton(
-                child: Text('Answer 4'),
-                onPressed: () {
-                  print('answer 4 selected');
-                  setState(() {
-                    _quectionIndex++;
-                  });
-                })
+                }),*/
           ],
         ),
       ),
