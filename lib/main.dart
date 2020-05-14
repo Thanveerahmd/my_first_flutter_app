@@ -19,16 +19,28 @@ class MyFirstApp extends StatefulWidget {
 class _MyFirstAppState extends State<MyFirstApp> {
   var _quectionIndex = 0;
 
-  void _answerQuestions() {
-    print('answer 1 selected');
+  final questions = const [
+    {
+      'questionText': 'what is your favourite colour ?',
+      'answers': ['Red', 'Green', 'Blue', 'Black']
+    },
+    {
+      'questionText': 'what is your favourite animal ?',
+      'answers': ['Cat', 'Dog', 'Elephant', 'Ant']
+    },
+    {
+      'questionText': 'what is your favourite Subject ?',
+      'answers': ['Maths', 'Science', 'Arts', 'Law']
+    },
+  ];
 
-    if (_quectionIndex > 1) {
-      print('Quiz is over');
-    } else {
+  void _answerQuestions() {
+    if (_quectionIndex < questions.length) {
       setState(() {
         _quectionIndex = _quectionIndex + 1;
       });
-      print(_quectionIndex);
+    } else {
+      print('Quiz is over');
     }
   }
 
@@ -39,21 +51,6 @@ class _MyFirstAppState extends State<MyFirstApp> {
     //   'what is your favourite animal ?'
     // ];
 
-    var questions = [
-      {
-        'questionText': 'what is your favourite colour ?',
-        'answers': ['Red', 'Green', 'Blue', 'Black']
-      },
-      {
-        'questionText': 'what is your favourite animal ?',
-        'answers': ['Cat', 'Dog', 'Elephant', 'Ant']
-      },
-      {
-        'questionText': 'what is your favourite Subject ?',
-        'answers': ['Maths', 'Science', 'Arts', 'Law']
-      },
-    ];
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -61,12 +58,11 @@ class _MyFirstAppState extends State<MyFirstApp> {
         ),
         body: Column(
           children: [
-
             Quection(questions[_quectionIndex]['questionText']),
 
-            // In this senario spread oprator (...) or 3 dots task is to pull all the values 
+            // In this senario spread oprator (...) or 3 dots task is to pull all the values
             // in the list and  use it as indivual value for the sourronding list (children[])
-        
+
             ...(questions[_quectionIndex]['answers'] as List<String>)
                 .map((answer) => Answer(_answerQuestions, answer))
                 .toList()
