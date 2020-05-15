@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_flutter_app/quection.dart';
-
-import 'answer.dart';
+import 'package:my_first_flutter_app/result.dart';
+import 'quize.dart';
 
 // void main() {
 //   runApp(MyFirstApp());
@@ -18,24 +17,48 @@ class MyFirstApp extends StatefulWidget {
 
 class _MyFirstAppState extends State<MyFirstApp> {
   var _quectionIndex = 0;
+  var _totalScore = 0;
 
-  final questions = const [
+  final _questions = const [
     {
       'questionText': 'what is your favourite colour ?',
-      'answers': ['Red', 'Green', 'Blue', 'Black']
+      'answers': [
+        {'text': 'Red', 'score': 7},
+        {'text': 'Green', 'score': 5},
+        {'text': 'Blue', 'score': 3},
+        {'text': 'Black', 'score': 10}
+      ]
     },
     {
       'questionText': 'what is your favourite animal ?',
-      'answers': ['Cat', 'Dog', 'Elephant', 'Ant']
+      'answers': [
+        {'text': 'Cat', 'score': 2},
+        {'text': 'Dog', 'score': 3},
+        {'text': 'Elephant', 'score': 8},
+        {'text': 'Ant', 'score': 7}
+      ]
     },
     {
       'questionText': 'what is your favourite Subject ?',
-      'answers': ['Maths', 'Science', 'Arts', 'Law']
+      'answers': [
+        {'text': 'Maths', 'score': 1},
+        {'text': 'Science', 'score': 3},
+        {'text': 'Arts', 'score': 10},
+        {'text': 'Law', 'score': 8}
+      ]
     },
   ];
 
-  void _answerQuestions() {
-    if (_quectionIndex < questions.length) {
+  void _resetQuiz() {
+    setState(() {
+      _quectionIndex = 0;
+      _totalScore = 0;
+    });
+  }
+
+  void _answerQuestions(int score) {
+    _totalScore += score;
+    if (_quectionIndex < _questions.length) {
       setState(() {
         _quectionIndex = _quectionIndex + 1;
       });
@@ -46,30 +69,28 @@ class _MyFirstAppState extends State<MyFirstApp> {
 
   @override
   Widget build(BuildContext context) {
-    // var questions = [
-    //   'what is your favourite colour ?',
-    //   'what is your favourite animal ?'
-    // ];
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Quize App'),
         ),
-        body: Column(
-          children: [
-            Quection(questions[_quectionIndex]['questionText']),
+        body: _quectionIndex < _questions.length
+            ? Quize(
+                answerQuestions: _answerQuestions,
+                quectionIndex: _quectionIndex,
+                questions: _questions,
+              )
+            : Center(
+                child: Result(_totalScore,_resetQuiz),
+              ),
+      ),
+    );
+  }
+}
 
-            // In this senario spread oprator (...) or 3 dots task is to pull all the values
-            // in the list and  use it as indivual value for the sourronding list (children[])
+// Diffrent methods of creating buttons
 
-            ...(questions[_quectionIndex]['answers'] as List<String>)
-                .map((answer) => Answer(_answerQuestions, answer))
-                .toList()
-
-            // Diffrent methods of creating buttons
-
-            /*
+/*
             // method 1
             RaisedButton(child: Text('Answer 1'), onPressed: _answerQuestions),
             // method 2
@@ -85,9 +106,3 @@ class _MyFirstAppState extends State<MyFirstApp> {
                     _quectionIndex++;
                   });
                 }),*/
-          ],
-        ),
-      ),
-    );
-  }
-}
